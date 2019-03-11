@@ -93,6 +93,8 @@ $ vnc4server -geometry 1920x1080
 2)enable vnc copy & paste function:
 $ vncconfig &
 
+#
+
 
 
 
