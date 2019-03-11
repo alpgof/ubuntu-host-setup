@@ -1,0 +1,76 @@
+Config
+# set default login user(e.g. root) 
+vi /etc/lightdm/lightdm.conf
+****************************
+$ [SetDefaults]
+$ #autologin-user=root
+$ allow-guest=false
+****************************
+if pop error message when login,modify
+vi /root/.profile
+****************************
+#"mesg n" 
+$ "tty -s && mesg n"
+****************************
+
+# add account
+****************************
+$ adduser tester 
+$ passwd xxxx
+****************************
+Note:
+delete user can use deluser/userdel
+
+# set user account as super user
+vi /etc/sudoers
+****************************
+$ sbin:/bin:/snap/bin's
+$ # Host alias specification
+$ # User alias specification
+$ # Cmnd alias specification
+$ # User privilege specification
+$ root ALL=(ALL:ALL) ALL
+$ tester ALL=(ALL:ALL) ALL
+$ #Members of the admin group may gain root privileges
+$ %admin ALL=(ALL) ALL
+$ #Allow members of group sudo to excute any command
+$ %sudo ALL=(ALL:ALL) ALL
+$ #See sudoers(5) for more information on "#include" directives:
+$ #includedir /etc/sudoers.d
+****************************
+
+# setup apt proxy
+vi /etc/apt/apt.conf
+****************************
+$ Acquire:http::proxy "xxxx";
+$ Acquire:https::proxy "xxxx";
+$ Acquire:ftp::proxy "xxxx";
+$ Acquire:socks:proxy "xxxx";
+****************************
+
+#install common package
+before install,better do update/upgrade to avoid depend issue.
+****************************
+$ sudo apt-get upgrade
+$ sudo apt-get update
+****************************
+install package
+****************************
+$ sudo apt-get install vim sudo socat gawk wget git-core diffstat unzip texinfo
+
+****************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
