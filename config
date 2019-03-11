@@ -1,16 +1,16 @@
 Config
 # set default login user(e.g. root) 
-vi /etc/lightdm/lightdm.conf
+$ vi /etc/lightdm/lightdm.conf
 ****************************
-$ [SetDefaults]
-$ #autologin-user=root
-$ allow-guest=false
+[SetDefaults]
+#autologin-user=root
+allow-guest=false
 ****************************
 if pop error message when login,modify
-vi /root/.profile
+$ vi /root/.profile
 ****************************
 #"mesg n" 
-$ "tty -s && mesg n"
+"tty -s && mesg n"
 ****************************
 
 # add account
@@ -22,30 +22,30 @@ Note:
 delete user can use deluser/userdel
 
 # set user account as super user
-vi /etc/sudoers
+$ vi /etc/sudoers
 ****************************
-$ sbin:/bin:/snap/bin's
-$ # Host alias specification
-$ # User alias specification
-$ # Cmnd alias specification
-$ # User privilege specification
-$ root ALL=(ALL:ALL) ALL
-$ tester ALL=(ALL:ALL) ALL
-$ #Members of the admin group may gain root privileges
-$ %admin ALL=(ALL) ALL
-$ #Allow members of group sudo to excute any command
-$ %sudo ALL=(ALL:ALL) ALL
-$ #See sudoers(5) for more information on "#include" directives:
-$ #includedir /etc/sudoers.d
+sbin:/bin:/snap/bin's
+# Host alias specification
+# User alias specification
+# Cmnd alias specification
+# User privilege specification
+root ALL=(ALL:ALL) ALL
+tester ALL=(ALL:ALL) ALL
+#Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+#Allow members of group sudo to excute any command
+%sudo ALL=(ALL:ALL) ALL
+#See sudoers(5) for more information on "#include" directives:
+#includedir /etc/sudoers.d
 ****************************
 
 # setup apt proxy
-vi /etc/apt/apt.conf
+$ vi /etc/apt/apt.conf
 ****************************
-$ Acquire:http::proxy "xxxx";
-$ Acquire:https::proxy "xxxx";
-$ Acquire:ftp::proxy "xxxx";
-$ Acquire:socks:proxy "xxxx";
+Acquire:http::proxy "xxxx";
+Acquire:https::proxy "xxxx";
+Acquire:ftp::proxy "xxxx";
+Acquire:socks:proxy "xxxx";
 ****************************
 
 #install common package
@@ -55,15 +55,43 @@ $ sudo apt-get upgrade
 $ sudo apt-get update
 ****************************
 install package
-****************************
-$ sudo apt-get install vim sudo socat gawk wget git-core diffstat unzip texinfo
+***************************************************************************************************************************
+$ sudo apt-get install vim sudo socat gawk wget git-core diffstat unzip texinfo build-essential chrpath libsdl1.2-dev 
+xterm libncurses5-dev patchutils connect-proxy rpm autoconf libtool  vnc4server  gnome-panel gnome-settings-daemon metacity 
+nautilus gnome-terminal  bison g++-multilib git gperf libxml2-utils ccache lib32z1 lib32ncurses5 libbz2-1.0 dos2unix zip 
+unzip make dpkg
+***************************************************************************************************************************
 
-****************************
+#config vnc
+$ vi .vnc/startup
+**********************************************************************************
+#!/bin/sh
+# Uncomment the following two lines for normal desktop:
+# unset SESSION_MANAGER
+# exec /etc/X11/xinit/xinitrc
+# [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+# [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+# xsetroot -solid grey
+# vncconfig -iconic &
+# x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
+# x-window-manager &
 
+export XKL_XMODMAP_DISABLE=1
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+gnome-panel &
+gnome-settings-daemon &
+metacity &
+nautilus &
+gnome-terminal &
 
-
-
-
+*********************************************************************************
+note: 
+if have a problem that can't find or modify this file,can run "vnc4server" firstly.
+1)config vnc resolution :
+$ vnc4server -geometry 1920x1080
+2)enable vnc copy & paste function:
+$ vncconfig &
 
 
 
