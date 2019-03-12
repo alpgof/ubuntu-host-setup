@@ -93,7 +93,27 @@ $ vnc4server -geometry 1920x1080
 2)enable vnc copy & paste function:
 $ vncconfig &
 
-#
+#setup internet proxy
+$ vi ~/.bashrc
+***************************************************
+#upper case exports
+export SOCKS_SERVER=xxxxx
+export HTTP_PROXY=xxxxx# This HTTP_DIRECT will be effective on my development only
+export HTTP_DIRECT=xxxxxx
+export HTTPS_PROXY=$HTTP_PROXY
+export FTP_PROXY=$SOCKS_SERVER
+export SOCKS_DIRECT=$HTTP_DIRECT
+export NO_PROXY=$HTTP_DIRECT
+#lower case exports
+export socks_server=$SOCKS_SERVER
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTPS_PROXY
+export ftp_proxy=$FTP_PROXY
+export http_direct=$HTTP_DIRECT
+export socks_direct=$SOCKS_DIRECT
+export no_proxy=$NO_PROXY
+***************************************************
+$ sourse ~/.bashrc
 
 
 
