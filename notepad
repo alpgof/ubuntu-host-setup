@@ -1,0 +1,99 @@
+# 添加 cutecom 权限
+$ sudo usermod -aG dialout $user
+$ reboot
+
+# 更改你的python版本优先级顺序
+$ update-alternatives --config python
+
+# 'adb devices', no adb device be enumerated 
+Add vendor id
+1.	Firstly, get the vendor id of your Hikey. Make sure Hikey is connecting to Ubuntu host, run “lsusb” in terminal, as Figure 2,
+the Google Inc. device is Hikey, “18d1” is vender id.
+2.	Secondary, create new file to add vendor id.
+sudo vi /etc/udev/rules.d/51-android.rules
+Input: SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0666", GROUP="plugdev", Then save.
+sudo chmod a+rx /etc/udev/rules.d/51-android.rules
+3.	Reboot.
+
+#查看内核版本
+cat /proc/version
+uname –r
+
+#查看模块内核版本
+Modinfo xxxx
+
+	Linux下Shell脚本输出带颜色文字
+文本终端的颜色可以使用“ANSI非常规字符序列”来生成。举例：
+1.	echo -e "\033[44;37;5m ME \033[0m COOL"
+以上命令设置作用如下：
+1.	背景色为蓝色，前景色为白色，字体闪烁，输出字符“ME”，然后重新设置屏幕到缺省设置，输出字符 “COOL”。
+2.	“e”是命令 echo 的一个可选项，它用于激活特殊字符的解析器。
+3.	“\033”引导非常规字符序列。
+4.	“m”意味着设置属性然后结束非常规字符序列，这个例子里真正有效的字符是“44;37;5” 和“0”。
+5.	修改“44;37;5”可以生成不同颜色的组合，数值和编码的前后顺序没有关系。
+________________________________________
+可以选择的编码如下所示：
+1.	　　编码 颜色/动作
+2.	　　0 重新设置属性到缺省设置
+3.	　　1 设置粗体
+4.	　　2 设置一半亮度(模拟彩色显示器的颜色)
+5.	　　4 设置下划线(模拟彩色显示器的颜色)
+6.	　　5 设置闪烁
+7.	　　7 设置反向图象
+8.	　　22 设置一般密度
+9.	　　24 关闭下划线
+10.	　　25 关闭闪烁
+11.	　　27 关闭反向图象
+12.	　　30 设置黑色前景
+13.	　　31 设置红色前景
+14.	　　32 设置绿色前景
+15.	　　33 设置棕色前景
+16.	　　34 设置蓝色前景
+17.	　　35 设置紫色前景
+18.	　　36 设置青色前景
+19.	　　37 设置白色前景
+20.	　　38 在缺省的前景颜色上设置下划线
+21.	　　39 在缺省的前景颜色上关闭下划线
+22.	　　40 设置黑色背景
+23.	　　41 设置红色背景
+24.	　　42 设置绿色背景
+25.	　　43 设置棕色背景
+26.	　　44 设置蓝色背景
+27.	　　45 设置紫色背景
+28.	　　46 设置青色背景
+29.	　　47 设置白色背景
+30.	　　49 设置缺省黑色背景
+31.	　　例如：在编译脚本文件时，对服务启动完成后的OK字符串设置成绿色
+
+	tar
+-c: 建立压缩档案
+-x：解压
+-t：查看内容
+-r：向压缩归档文件末尾追加文件
+-u：更新原压缩包中的文件
+-z：有gzip属性的
+-j：有bz2属性的
+-Z：有compress属性的
+-v：显示所有过程
+-O：将文件解开到标准输出
+压缩
+tar –cvf jpg.tar *.jpg //将目录里所有jpg文件打包成tar.jpg
+tar –czf jpg.tar.gz *.jpg   //将目录里所有jpg文件打包成jpg.tar后，并且将其用gzip压缩，生成一个gzip压缩过的包，命名为jpg.tar.gz
+tar –cjf jpg.tar.bz2 *.jpg //将目录里所有jpg文件打包成jpg.tar后，并且将其用bzip2压缩，生成一个bzip2压缩过的包，命名为jpg.tar.bz2
+tar –cZf jpg.tar.Z *.jpg   //将目录里所有jpg文件打包成jpg.tar后，并且将其用compress压缩，生成一个umcompress压缩过的包，命名为jpg.tar.Z
+rar a jpg.rar *.jpg //rar格式的压缩，需要先下载rar for Linux
+zip jpg.zip *.jpg //zip格式的压缩，需要先下载zip for linux
+
+解压
+tar –xvf file.tar //解压 tar包
+tar -xzvf file.tar.gz //解压tar.gz
+tar -xjvf file.tar.bz2   //解压 tar.bz2
+tar –xZvf file.tar.Z   //解压tar.Z
+unrar e file.rar //解压rar
+unzip file.zip //解压zip
+
+	使用vim中的替换命令:%s/原字符串/替换字符串/gg
+	Read 
+read命令接收标准输入（键盘）的输入，或其他文件描述符的输入（后面在说）。得到输入后，read命令将数据放入一个标准变量中。
+https://blog.csdn.net/cbbbc/article/details/52199152 
+
