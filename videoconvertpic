@@ -1,0 +1,94 @@
+#!/usr/bin/env python
+import matplotlib.pyplot as plt
+import numpy as np
+import sys
+import cv2
+import PIL.Image as Image
+from enum import Enum, unique
+
+
+@unique
+class COLOR_FOEMAT(Enum):
+    COLOR_FORMAT_NONE = 0
+    COLOR_FORMAT_YUY2 = 1
+    COLOR_FORMAT_NV12 = 2
+    COLOR_FORMAT_Y_ONLY = 3
+    COLOR_FORMAT_RAW8 = 4
+    COLOR_FORMAT_RAW10 = 5
+    COLOR_FORMAT_RGB888 = 6
+    COLOR_FORMAT_RGBX = 7
+    COLOR_FORMAT_RAW6 = 8
+    COLOR_FORMAT_MONO8 = 9
+    COLOR_FORMAT_RGB444_PACKED = 10
+
+
+def array2img(array_data, format):
+    if format == COLOR_FOEMAT.COLOR_FORMAT_Y_ONLY.value:
+        img = Image.fromarray(array_data, "L")
+        imgcv = cv2.cvtColor(np.asarray(img.convert('RGB')), cv2.COLOR_RGB2BGR)
+    elif format == COLOR_FOEMAT.COLOR_FORMAT_RGB888.value:
+        img = Image.fromarray(array_data, "RGB")
+        imgcv = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+    elif format == COLOR_FOEMAT.COLOR_FORMAT_YUY2.value:
+        # img = Image.fromarray(array_data, "RGB")
+        imgcv = cv2.cvtColor(array_data.reshape(
+            320*240*3)[0:320*240*2].reshape([240, 320, 2]), cv2.COLOR_YUV2RGB_YUYV)
+    else:
+        imgcv = None
+    return imgcv
+
+
+def main():
+    if len(sys.argv) < 4:
+        print("./tran_pic.py input_image output_image ir/rgb", len(sys.argv))
+        exit(0)
+    img_name = sys.argv[2]
+    file_data = np.fromfile(sys.argv[1], dtype=np.uint8)
+    if sys.argv[3] == "ir":
+        datas = file_data.reshape([-1, 320*240+12])
+    else:
+        datas = file_data.reshape([-1, 320*240*3+12])
+
+    print(datas.shape)
+
+    video_path = img_name+".mp4"
+    # fps
+    fps = 10
+    fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+    video_writer = cv2.VideoWriter(video_path, fourcc, fps, (320, 240))
+
+    i = 0
+    for data in datas:
+        img_path = img_name + str(i)
+        if sys.argv[3] == "ir":
+            pic = data[0:76800].reshape([240, 320])
+            format = data[76800:]
+        else:
+            pic = data[0:320*240*3].reshape([240, 320, 3])
+            format = data[320 * 240 * 3:]
+
+        img_format = format[0]
+        pixel_width = format[1]
+        width = format[5] << 8 | format[4]
+        height = format[7] << 8 | format[6]
+        # print(pic[:, :, :])
+        print(img_path + " format: " + str(img_format) + " pixel_width:" +
+              str(pixel_width) + " width: " + str(width), " height: " + str(height))
+        #pic.tofile(img_path)
+        #plt.imshow(pic1)
+        #plt.show()
+        imgcv = array2img(pic, img_format)
+        cv2.imwrite(img_path +".jpg", imgcv)
+
+        video_writer.write(imgcv)
+        i += 1
+    video_writer.release()
+
+
+# plt.imshow(pic1)
+# plt.savefig('fig_cat.png')
+# plt.show()
+
+
+if __name__ == "__main__":
+    main()
