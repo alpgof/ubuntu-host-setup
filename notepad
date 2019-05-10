@@ -97,3 +97,71 @@ unzip file.zip //解压zip
 read命令接收标准输入（键盘）的输入，或其他文件描述符的输入（后面在说）。得到输入后，read命令将数据放入一个标准变量中。
 https://blog.csdn.net/cbbbc/article/details/52199152 
 
+运用samba创建Ubuntu share folder
+Samba是用于Unix和Linux的免费开源SMB/CIFS协议实现，允许在局域网中的Unix/Linux和Windows机器之间进行文件和打印共享。
+Samba是一套程序，其中最重要的两个是：
+smbd：提供SMB / CIFS服务（文件共享和打印），也可以作为Windows域控制器。
+nmbd：提供NetBIOS名称服务
+1.安装Samba 
+  $ sudo apt install samba
+2.检查Samba版本
+  $ sudo smba --version
+3.编辑Samba配置文件
+  $ sudo vi /etc/samba/smb.conf
+  example:
+  [global]
+    printcap name=cups
+    winbind enum groups=yes
+    include=/var/tmp/nginx/smb.netbios.aliases.conf
+    security=user
+    local master=no
+    realm=*
+    passdb backend=smbpasswd
+    printing=cups
+    max protocol=SMB2
+    winbind enum users=yes
+    load printers=yes
+    workgroup=WORKGROUP
+[AUTO]
+    invalid users=nobody,nobody
+    valid users=nobody,nobody
+    comment="For Auto test log"
+    path=/volume1/AUTO
+    guest ok=yes
+    browseable=yes
+    mediaindex=no
+    edit synoacl=yes
+    win share=yes
+    skip smb perm=yes
+    enable recycle bin=no
+    recycle bin admin only=no
+    hide unreadable=no
+    ftp disable list=no
+    ftp disable modify=no
+    ftp disable download=no
+    read list=nobody,nobody
+    write list=nobody,nobody
+    writeable=yes
+  [icg_sh_share]
+    invalid users=nobody,nobody
+    valid users=nobody,nobody
+    comment="Share folder for ICG"
+    path=/volume1/icg_sh_share
+    guest ok=yes
+    browseable=yes
+    mediaindex=no
+    edit synoacl=yes
+    win share=yes
+    skip smb perm=yes
+    enable recycle bin=yes
+    recycle bin admin only=yes
+    hide unreadable=no
+    ftp disable list=no
+    ftp disable modify=no
+    ftp disable download=no
+    read list=nobody,nobody
+    write list=nobody,nobody
+    writeable=yes
+
+
+
