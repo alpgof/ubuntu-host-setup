@@ -145,8 +145,8 @@ nmbd：提供NetBIOS名称服务
   [icg_sh_share]
     invalid users=nobody,nobody
     valid users=nobody,nobody
-    comment="Share folder for ICG"
-    path=/volume1/icg_sh_share
+    comment="*"
+    path=/volume1/*
     guest ok=yes
     browseable=yes
     mediaindex=no
